@@ -6,6 +6,8 @@ import { ModalContext, ModalContextProps } from "@/app/context/modalContext";
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client";
 import { useContext } from "react";
+import { AddForm } from "./components/Form/AddForm";
+import { EditForm } from "./components/Form/EditForm";
 
 export const GET_VACATIONS = gql`
   query getVacations {
@@ -13,14 +15,16 @@ export const GET_VACATIONS = gql`
       name
       start
       end
+      id
     }
   }
 `;
 
-type Vacation = {
+export type Vacation = {
   name: string;
   start: number;
   end: number;
+  id: number;
 };
 
 export const Vacations = () => {
@@ -45,10 +49,24 @@ export const Vacations = () => {
       },
       {
         header: "actions",
-        content: () => (
+        content: (data) => (
           <>
-            <button>Edit</button>
-            <button>Delete</button>
+            <button
+              onClick={() => {
+                setModalComponent(
+                  <Modal closingHandler={closeModal}>
+                    <EditForm
+                      closingHandler={closeModal}
+                      vacationDetails={data}
+                    />
+                  </Modal>
+                );
+              }}
+              aria-label="edit"
+            >
+              Edit
+            </button>
+            <button aria-label="delete">Delete</button>
           </>
         ),
         label: <>...</>,
@@ -58,17 +76,16 @@ export const Vacations = () => {
 
   return (
     <>
-      vac {console.log(data)}
       <button
         onClick={() => {
           setModalComponent(
             <Modal closingHandler={closeModal}>
-              <>pajonk</>
+              <AddForm closingHandler={closeModal} />
             </Modal>
           );
         }}
       >
-        open modal
+        Add Vacations
       </button>
       <Table config={tableConfig} data={data?.vacations} />
     </>

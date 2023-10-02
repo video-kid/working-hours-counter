@@ -5,6 +5,7 @@ import { Providers } from "@/lib/providers";
 import { Nav } from "./components/Nav";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { secrets } from "./secrets";
+import ModalProvider from "./context/modalContext";
 
 /* Instruments */
 import "./styles/globals.css";
@@ -22,8 +23,12 @@ export default function RootLayout(props: React.PropsWithChildren) {
       <Providers>
         <html lang="en">
           <body>
-            <Nav />
-            <main>{props.children}</main>
+            <ModalProvider>
+              <>
+                <Nav />
+                <main>{props.children}</main>
+              </>
+            </ModalProvider>
           </body>
         </html>
       </Providers>

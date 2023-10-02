@@ -1,0 +1,24 @@
+.wrapper {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .header {
+    background-color: "black";
+    color: "white";
+    font-family: "Arial";
+    th {
+      font-weight: 400;
+    }
+  }
+  
+  .row:hover,
+  .row:nth-of-type(even) {
+    background-color: 'grey';
+  }
+  
+  .record {
+    padding: 0.8rem 1.5rem;
+    text-align: left;
+  }

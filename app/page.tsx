@@ -1,10 +1,5 @@
-/* Components */
-import { Counter } from './components/Counter/Counter'
+import { Vacations } from "./pages/Vacations/Vacations";
 
 export default function IndexPage() {
-  return <Counter />
-}
-
-export const metadata = {
-  title: 'Redux Toolkit',
+  return <Vacations />;
 }

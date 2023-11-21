@@ -1,26 +1,28 @@
-import { AddVacationsFormProps, Form } from "./Form";
-import { gql, useMutation } from "@apollo/client";
-import { Vacation } from "../../Vacations";
+import { AddVacationsFormProps, Form } from './Form';
+import { gql, useMutation } from '@apollo/client';
+import { Vacation } from '../../Vacations';
+import { dateToDateFieldFormat, epochToDate } from '../../utils';
 
 export const EDIT_VACATION = gql`
-mutation updateVacations($id: Int!, $name: String!, $start: String!, $end: String!) {
-  update_vacations (
-    where: {id: {_eq: $id}},
-    _set: {
-      name: $name, 
-      start: $start, 
-      end: $end,
-    }
+  mutation updateVacations(
+    $id: Int!
+    $name: String!
+    $start: String!
+    $end: String!
   ) {
-    affected_rows
-    returning {
+    update_vacations(
+      where: { id: { _eq: $id } }
+      _set: { name: $name, start: $start, end: $end }
+    ) {
+      affected_rows
+      returning {
         name
         start
         end
         id
+      }
     }
   }
-}
 `;
 
 type EditFormProps = {
@@ -33,7 +35,14 @@ export const EditForm = ({
   vacationDetails,
 }: EditFormProps) => {
   const onSubmit = (data: AddVacationsFormProps) => {
-    editVacation({ variables: { id: vacationDetails.id, name: data.name, start: data.start, end: data.end } });
+    editVacation({
+      variables: {
+        id: vacationDetails.id,
+        name: data.name,
+        start: data.start,
+        end: data.end,
+      },
+    });
     closingHandler();
   };
 
@@ -45,8 +54,8 @@ export const EditForm = ({
         onSubmit={onSubmit}
         onCancel={closingHandler}
         initialValues={{
-          start: vacationDetails.start,
-          end: vacationDetails.end,
+          start: dateToDateFieldFormat(epochToDate(vacationDetails.start)),
+          end: dateToDateFieldFormat(epochToDate(vacationDetails.end)),
           name: vacationDetails.name,
         }}
       />

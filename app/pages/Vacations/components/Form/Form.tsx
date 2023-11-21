@@ -1,15 +1,18 @@
-import { useForm } from "react-hook-form";
+import Field from '@/app/components/Form/partials/Field';
+import TextField from '@/app/components/Form/partials/TextField';
+import { useForm } from 'react-hook-form';
 
 export type AddVacationsFormProps = {
-  start: number | null;
-  end: number | null;
+  start: string;
+  end: string;
   name: string;
+  details?: string;
 };
 
 const initialFormValues: AddVacationsFormProps = {
-  start: null,
-  end: null,
-  name: "",
+  start: '',
+  end: '',
+  name: '',
 };
 
 type FormProps = {
@@ -29,28 +32,48 @@ export const Form = ({
     formState: { errors },
   } = useForm<AddVacationsFormProps>({
     defaultValues: initialValues,
-    mode: "all",
+    mode: 'all',
   });
   console.log(errors);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input
-        type="number"
-        placeholder="start"
-        {...register("start", { required: true })}
+      <Field
+        label='Start date'
+        id='start'
+        type='date'
+        placeholder='start'
+        {...register('start', { required: true })}
       />
-      <input
-        type="number"
-        placeholder="end"
-        {...register("end", { required: true })}
+      <Field
+        label='End date'
+        id='end'
+        type='date'
+        placeholder='start'
+        {...register('end', { required: true })}
       />
-      <input type="text" placeholder="name" {...register("name", {})} />
+      <Field
+        label='Name'
+        id='name'
+        placeholder='Name'
+        {...register('name', { required: true })}
+      />
+      <TextField
+        label='Details'
+        id='details'
+        placeholder='details'
+        {...register('details', {})}
+      />
 
-      <button type="button" aria-label="cancel" onClick={onCancel}>
+      <button
+        type='button'
+        aria-label='cancel'
+        onClick={onCancel}>
         Cancel
       </button>
-      <button aria-label="save" type="submit">
+      <button
+        aria-label='save'
+        type='submit'>
         Save
       </button>
     </form>

@@ -1,41 +1,38 @@
-"use client";
+'use client';
 
-import { Modal } from "@/app/components/Modal/Modal";
-import { Table, TableConfigType } from "@/app/components/Table/Table";
-import { ModalContext, ModalContextProps } from "@/app/context/modalContext";
-import { gql, useMutation } from "@apollo/client";
-import { useQuery } from "@apollo/client";
-import { useContext } from "react";
-import { AddForm } from "./components/Form/AddForm";
-import { EditForm } from "./components/Form/EditForm";
+import { Modal } from '@/app/components/Modal/Modal';
+import { Table, TableConfigType } from '@/app/components/Table/Table';
+import { ModalContext, ModalContextProps } from '@/app/context/modalContext';
+import { gql, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import { useContext } from 'react';
+import { AddForm } from './components/Form/AddForm';
+import { EditForm } from './components/Form/EditForm';
 
 export const GET_VACATIONS = gql`
   query getVacations {
     vacations {
-    id
-		details
-		end
-		last_modified
-		name
-		start
-		created
+      id
+      details
+      end
+      last_modified
+      name
+      start
+      created
     }
   }
 `;
 
 export const DELETE_VACATION = gql`
-mutation updateVacations($id: Int!) {
-  delete_vacations (
-    where: {id: {_eq: $id}},
-  ) {
-    affected_rows
-    returning {
+  mutation updateVacations($id: Int!) {
+    delete_vacations(where: { id: { _eq: $id } }) {
+      affected_rows
+      returning {
         id
+      }
     }
   }
-}
 `;
-
 
 export type Vacation = {
   name: string;
@@ -57,19 +54,19 @@ export const Vacations = () => {
   const tableConfig: TableConfigType<Vacation> = {
     content: [
       {
-        header: "name",
+        header: 'name',
         content: (content) => <>{content.name}</>,
       },
       {
-        header: "start",
+        header: 'start',
         content: (content) => <>{content.start}</>,
       },
       {
-        header: "end",
+        header: 'end',
         content: (content) => <>{content.end}</>,
       },
       {
-        header: "actions",
+        header: 'actions',
         content: (data) => (
           <>
             <button
@@ -83,13 +80,16 @@ export const Vacations = () => {
                   </Modal>
                 );
               }}
-              aria-label="edit"
-            >
+              aria-label='edit'>
               Edit
             </button>
-            <button aria-label="delete" onClick={() => {
-                  deleteVacation({ variables: { id: data.id } });
-            }}>Delete</button>
+            <button
+              aria-label='delete'
+              onClick={() => {
+                deleteVacation({ variables: { id: data.id } });
+              }}>
+              Delete
+            </button>
           </>
         ),
         label: <>...</>,
@@ -106,11 +106,14 @@ export const Vacations = () => {
               <AddForm closingHandler={closeModal} />
             </Modal>
           );
-        }}
-      >
+        }}>
         Add Vacations
       </button>
-      <Table config={tableConfig} data={data?.vacations} />
+      {console.log(data?.vacations)}
+      <Table
+        config={tableConfig}
+        data={data?.vacations}
+      />
     </>
   );
 };

@@ -1,5 +1,6 @@
-import { AddVacationsFormProps, Form } from "./Form";
-import { gql, useMutation } from "@apollo/client";
+import { dateToEpoch } from '../../utils';
+import { AddVacationsFormProps, Form } from './Form';
+import { gql, useMutation } from '@apollo/client';
 
 export const ADD_VACATION = gql`
   mutation AddVacations($name: String!, $start: String!, $end: String!) {
@@ -20,7 +21,13 @@ type AddFormProps = {
 
 export const AddForm = ({ closingHandler }: AddFormProps) => {
   const onSubmit = (data: AddVacationsFormProps) => {
-    addVacations({ variables: { name: data.name, start: data.start, end: data.end } });
+    addVacations({
+      variables: {
+        name: data.name,
+        start: dateToEpoch(data.start).toString(),
+        end: dateToEpoch(data.end).toString(),
+      },
+    });
     closingHandler();
   };
 
@@ -29,7 +36,10 @@ export const AddForm = ({ closingHandler }: AddFormProps) => {
   return (
     <>
       <h2>Add Vacations</h2>
-      <Form onSubmit={onSubmit} onCancel={closingHandler} />
+      <Form
+        onSubmit={onSubmit}
+        onCancel={closingHandler}
+      />
     </>
   );
 };

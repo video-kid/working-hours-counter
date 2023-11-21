@@ -2,8 +2,8 @@ import { AddVacationsFormProps, Form } from "./Form";
 import { gql, useMutation } from "@apollo/client";
 
 export const ADD_VACATION = gql`
-  mutation AddVacation($name: String!, $start: Integer!, $end: Integer!) {
-    insert_vacation(objects: [{ name: $name, start: $start, end: $end }]) {
+  mutation AddVacations($name: String!, $start: String!, $end: String!) {
+    insert_vacations(objects: [{ name: $name, start: $start, end: $end }]) {
       returning {
         name
         start
@@ -20,12 +20,11 @@ type AddFormProps = {
 
 export const AddForm = ({ closingHandler }: AddFormProps) => {
   const onSubmit = (data: AddVacationsFormProps) => {
-    console.log(data, "a");
-    // addUser({ variables: { name: data.name, start: data.start, end: data.end } });
-    // closingHandler();
+    addVacations({ variables: { name: data.name, start: data.start, end: data.end } });
+    closingHandler();
   };
 
-  const [addVacation] = useMutation(ADD_VACATION);
+  const [addVacations] = useMutation(ADD_VACATION);
 
   return (
     <>

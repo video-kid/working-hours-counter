@@ -3,16 +3,24 @@ import { gql, useMutation } from "@apollo/client";
 import { Vacation } from "../../Vacations";
 
 export const EDIT_VACATION = gql`
-  mutation EditVacation($name: String!, $start: Integer!, $end: Integer!) {
-    insert_vacation(objects: [{ name: $name, start: $start, end: $end }]) {
-      returning {
+mutation updateVacations($id: Int!, $name: String!, $start: String!, $end: String!) {
+  update_vacations (
+    where: {id: {_eq: $id}},
+    _set: {
+      name: $name, 
+      start: $start, 
+      end: $end,
+    }
+  ) {
+    affected_rows
+    returning {
         name
         start
         end
         id
-      }
     }
   }
+}
 `;
 
 type EditFormProps = {
@@ -25,13 +33,11 @@ export const EditForm = ({
   vacationDetails,
 }: EditFormProps) => {
   const onSubmit = (data: AddVacationsFormProps) => {
-    console.log(data, vacationDetails.id);
-    // addUser({ variables: { name: data.name, start: data.start, end: data.end } });
-    // closingHandler();
+    editVacation({ variables: { id: vacationDetails.id, name: data.name, start: data.start, end: data.end } });
+    closingHandler();
   };
 
-  const [addVacation] = useMutation(EDIT_VACATION);
-
+  const [editVacation] = useMutation(EDIT_VACATION);
   return (
     <>
       <h2>Edit Vacations</h2>

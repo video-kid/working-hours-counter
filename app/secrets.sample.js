@@ -1,5 +1,8 @@
 export const secrets = {
   db: {
-    vacations: "",
+    url: '',
+    vacations: '',
   },
+  jwt: { key: '', type: '' },
+  tempAuth: '',
 };
